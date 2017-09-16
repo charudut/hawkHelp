@@ -1,5 +1,5 @@
 """
-Python code to handle SMS queries sent to (515)800-2016
+Python code to handle SMS queries sent to (515)800-####
 This is part of hawkHelp project done at University of Iowa Hackathon 2017
 """
 
@@ -56,12 +56,12 @@ def sms():
     else:
         if message_body_array[0] == 'food':
             resp_adv1 = twiml.Response()
-            resp_adv1.message('working on yelp integration')
+            resp_adv1.message('working on yelp integration. Updates to follow soon')
             return str(resp_adv1)
 
         if message_body_array[0] == 'movie':
             resp_adv2 = twiml.Response()
-            resp_adv2.message('working on IMDB integration')
+            resp_adv2.message('working on IMDB integration Updates to follow soon')
             return str(resp_adv2)
  
 if __name__ == '__main__':
