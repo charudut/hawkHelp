@@ -32,7 +32,7 @@ def sms():
             resp1 = twiml.Response()
             resp1.message('Menu Options:\n'
                           'Food\n'
-                          'Movie\n'
+                          'Doctor\n'
                           'Weather\n'
                           '\n'
                           'Reply back with a selection. For e.g. "food" if you\'re hungry')
@@ -44,10 +44,10 @@ def sms():
                           'e.g. If you\'re in the mood for Chinese in 52240(Iowa City), reply "food chinese 52240"')
             return str(resp2)
 
-        if message_body in ["movie", "Movie"]:
+        if message_body in ["doctor", "Doctor"]:
             resp3 = twiml.Response()
-            resp3.message('What is your Zipcode?\n'
-                          'e.g. If you\'re in the mood for Logan in 52240(Iowa City), reply "movie action 52240"')
+            resp3.message('What speciality are you looking for? And what\'s your Zipcode?\n'
+                          'e.g. To find a neurology specialist in 52240(Iowa City), reply "doctor neurology 52240"')
             return str(resp3)
 
         if message_body in ["weather", "Weather"]:
@@ -71,9 +71,11 @@ def sms():
             resp_adv1.message(master_response_food)
             return str(resp_adv1)
 
-        if message_body_array[0] in ["movie", "Movie"]:
+        if message_body_array[0] in ["doctor", "Doctor"]:
             resp_adv2 = twiml.Response()
-            resp_adv2.message('IMDB integration in progress. Updates to follow soon')
+            d1, d2, d3 = search_yelp(message_body_array[1], message_body_array[2])
+            master_response_food = d1 + '\n' + d2 + '\n' + d3
+            resp_adv2.message(master_response_food)
             return str(resp_adv2)
 
         if message_body_array[0] in ["weather", "Weather"]:
