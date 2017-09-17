@@ -3,8 +3,6 @@ Python code to handle SMS queries sent to (515)800-####
 This is part of hawkHelp project done at University of Iowa Hackathon 2017
 """
 
-
-
 from flask import Flask, request
 from twilio import twiml
 from weather import Weather
@@ -43,19 +41,19 @@ def sms():
         if message_body in ["food", "Food"]:
             resp2 = twiml.Response()
             resp2.message('Select cuisine and location.\n'
-                          'e.g. If you are in the mood for Chinese in Iowa City, reply back "food chinese 52240"')
+                          'e.g. If you\'re in the mood for Chinese in 52240(Iowa City), reply "food chinese 52240"')
             return str(resp2)
 
         if message_body in ["movie", "Movie"]:
             resp3 = twiml.Response()
             resp3.message('What is your Zipcode?\n'
-                          'e.g. If you are in the mood for Logan in Iowa City, reply back "movie action 52240"')
+                          'e.g. If you\'re in the mood for Logan in 52240(Iowa City), reply "movie action 52240"')
             return str(resp3)
 
         if message_body in ["weather", "Weather"]:
             resp4 = twiml.Response()
-            resp4.message('Select Value and Zipcode?\n'
-                          'e.g. If you need temperature info for Iowa City, reply back "weather forecast 52240"')
+            resp4.message('What is your Zipcode?\n'
+                          'e.g. If you need weather info for 52240(Iowa City), reply back "weather forecast 52240"')
             return str(resp4)
 
         else:
@@ -69,13 +67,13 @@ def sms():
         if message_body_array[0] in ["food", "Food"]:
             resp_adv1 = twiml.Response()
             r1, r2, r3 = search_yelp(message_body_array[1], message_body_array[2])
-            master_response_food = r1 + r2 + r3
+            master_response_food = r1 + '\n' + r2 + '\n' + r3
             resp_adv1.message(master_response_food)
             return str(resp_adv1)
 
         if message_body_array[0] in ["movie", "Movie"]:
             resp_adv2 = twiml.Response()
-            resp_adv2.message('working on IMDB integration. Updates to follow soon')
+            resp_adv2.message('IMDB integration in progress. Updates to follow soon')
             return str(resp_adv2)
 
         if message_body_array[0] in ["weather", "Weather"]:
@@ -88,8 +86,9 @@ def sms():
 
         if message_body[0] not in ["food", "Food", "movie", "Movie", "weather", "Weather"]:
             resp_adv_err = twiml.Response()
-            resp_adv_err.message('We\'re sorry, but this option is not implemented yet.\n'
-                                 'Feedback is appreciated! hello@hawkhelp.net')
+            resp_adv_err.message('We\'re sorry, but this is not a valid option.\n'
+                                 'Feedback is appreciated! hello@hawkhelp.net\n'
+                                 'Reply "list" to get started.')
             return str(resp_adv_err)
 
 
@@ -107,7 +106,7 @@ def get_weather(zipcode):
     climate['Humidity']= atmosphere['humidity']
     climate['Condition']= condition['text']
 
-    weather_resp = "Forecast for today is " + condition['text'] + ". " + "\nTemperature: " + condition['temp'] + "F" + "\nWind Speed: " + wind['speed']+"kmph" + "\nhumidity: " + atmosphere['humidity']+"%"
+    weather_resp = "Forecast for today is " + condition['text'] + ". " + "\nTemperature: " + condition['temp'] + " F" + "\nWind Speed: " + wind['speed']+" kmph" + "\nhumidity: " + atmosphere['humidity']+"%"
     return weather_resp
 
 
@@ -115,9 +114,9 @@ def search_yelp(cuisine, z):
 
     response_restaurants = yelp_api.search_query(term=cuisine, location=z, sort_by='rating', limit=3)
 
-    res1yelp = response_restaurants['businesses'][0]['name'] + ',' + response_restaurants['businesses'][0]['display_phone']
-    res2yelp = response_restaurants['businesses'][1]['name'] + ',' + response_restaurants['businesses'][1]['display_phone']
-    res3yelp = response_restaurants['businesses'][2]['name'] + ',' + response_restaurants['businesses'][2]['display_phone']
+    res1yelp = response_restaurants['businesses'][0]['name'] + ', ' + response_restaurants['businesses'][0]['display_phone']
+    res2yelp = response_restaurants['businesses'][1]['name'] + ', ' + response_restaurants['businesses'][1]['display_phone']
+    res3yelp = response_restaurants['businesses'][2]['name'] + ', ' + response_restaurants['businesses'][2]['display_phone']
 
     return res1yelp, res2yelp, res3yelp
 
