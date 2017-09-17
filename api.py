@@ -46,8 +46,8 @@ GRANT_TYPE = 'client_credentials'
 
 # Defaults for our simple example.
 
-DEFAULT_TERM = input()
-DEFAULT_LOCATION = input()
+DEFAULT_TERM = raw_input()
+DEFAULT_LOCATION = raw_input()
 SEARCH_LIMIT = 3
 
 
